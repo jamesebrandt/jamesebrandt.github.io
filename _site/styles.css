@@ -1,21 +1,21 @@
 /* 
   MKBHD-Inspired CSS Stylesheet
-  Theme: "Matte Black Everything" & Minimalist Tech
+  Theme: Premium Space Grey & Modern Tech
 */
 
 :root {
-  /* Color Palette */
-  --bg-primary: #000000;
-  --bg-secondary: #121212;
-  --bg-card: #1c1c1c;
-  --accent-red: #ea3323; /* Signature MKBHD Red */
+  /* Graphite / Space Grey Palette */
+  --bg-primary: #1c1c1e;     /* Deep grey background */
+  --bg-secondary: #2c2c2e;   /* Slightly lighter grey for headers/menus */
+  --bg-card: #3a3a3c;        /* Lighter grey for cards to stand out */
+  --accent-red: #ea3323;     /* Signature Red */
   --accent-red-hover: #c4271a;
   
   /* Typography Variables */
-  --text-primary: #ffffff;
-  --text-secondary: #999999;
-  --text-muted: #555555;
-  --border-color: #2a2a2a;
+  --text-primary: #f5f5f7;   /* Off-white for high contrast */
+  --text-secondary: #ebebf5; /* Softer white for secondary text */
+  --text-muted: #8e8e93;     /* Grey for subtle details */
+  --border-color: #48484a;
   
   /* Structure & Spacing */
   --border-radius: 12px;
@@ -48,129 +48,95 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
-h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
-h2 { font-size: clamp(2rem, 4vw, 3rem); }
-p { color: var(--text-secondary); margin-bottom: 1rem; }
+/* =========================================
+   Redesigned Navigation Menu
+   ========================================= */
+header {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
 
-a {
+.nav-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Replaces the text styling from the image */
+.site-title {
+  font-weight: 700;
+  font-size: 1.25rem;
   color: var(--text-primary);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 1rem;
   text-decoration: none;
   transition: color var(--transition-speed) ease;
 }
 
-a:hover {
+.nav-links a:hover, 
+.nav-links a.active {
   color: var(--accent-red);
 }
 
-/* Layout Utilities */
+.search-icon {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-primary);
+  stroke-width: 2;
+  cursor: pointer;
+  transition: stroke var(--transition-speed) ease;
+}
+
+.search-icon:hover {
+  stroke: var(--accent-red);
+}
+
+/* =========================================
+   Layout Utilities & Components
+   ========================================= */
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 2rem;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem 0;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.logo {
-  font-weight: 900;
-  font-size: 1.5rem;
-  letter-spacing: -0.05em;
-  text-transform: uppercase;
-}
-
-.logo span {
-  color: var(--accent-red);
-}
-
-/* UI Components */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--accent-red);
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 30px; /* Pill shape */
-  border: none;
-  cursor: pointer;
-  transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
-}
-
-.btn:hover {
-  background-color: var(--accent-red-hover);
-  transform: translateY(-2px);
-  color: #fff;
-}
-
-.btn-outline {
-  background-color: transparent;
-  border: 2px solid var(--text-primary);
-  color: var(--text-primary);
-}
-
-.btn-outline:hover {
-  background-color: var(--text-primary);
-  color: var(--bg-primary);
-}
-
-/* Grid System for Content (e.g., Video Thumbnails) */
+/* Cards */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
-  margin: 3rem 0;
+  margin: 2rem 0;
 }
 
-/* Cards */
 .card {
   background-color: var(--bg-card);
   border-radius: var(--border-radius);
   overflow: hidden;
   border: 1px solid var(--border-color);
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   border-color: var(--text-muted);
-}
-
-.card-img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background-color: var(--bg-secondary);
-  object-fit: cover;
-  display: block;
-}
-
-.card-content {
-  padding: 1.5rem;
-}
-
-.card-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.tag {
-  display: inline-block;
-  background-color: var(--bg-secondary);
-  color: var(--text-secondary);
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  border-radius: 4px;
-  margin-bottom: 1rem;
 }
