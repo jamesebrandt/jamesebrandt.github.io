@@ -1,7 +1,7 @@
 ---
-title: "Stat381_github_website"
+title: "James Brandt"
 ---
 
-This is a Quarto website.
+## STAT 386
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+[Building a College Football Logo Scatter Plot in Python](tutorial-blog/index.qmd)

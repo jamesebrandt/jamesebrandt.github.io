@@ -7,10 +7,73 @@
     "text": "About this site"
   },
   {
+    "objectID": "tutorial-blog/index.html",
+    "href": "tutorial-blog/index.html",
+    "title": "Building a College Football Logo Scatter Plot in Python",
+    "section": "",
+    "text": "This tutorial blog walks through the process of creating the following plot:\n\nFigure 3\nThis graph shows the efficiency of offense and defense for NCAA football teams. Further to the right is a more efficient offense, and further down is a defense that holds opposing offenses to lower efficiency. Therefore, more efficient teams will appear toward the bottom right of the graph. This is helpful for seeing how teams compare in a nice, easy-to-read plot.\nThis tutorial will walk through the process of creating the graph using Matplotlib in Python and using team logos as the data points. The data is cleaned and in a downloadable form here: download the CSV and team logos."
+  },
+  {
+    "objectID": "tutorial-blog/index.html#introduction",
+    "href": "tutorial-blog/index.html#introduction",
+    "title": "Building a College Football Logo Scatter Plot in Python",
+    "section": "",
+    "text": "This tutorial blog walks through the process of creating the following plot:\n\nFigure 3\nThis graph shows the efficiency of offense and defense for NCAA football teams. Further to the right is a more efficient offense, and further down is a defense that holds opposing offenses to lower efficiency. Therefore, more efficient teams will appear toward the bottom right of the graph. This is helpful for seeing how teams compare in a nice, easy-to-read plot.\nThis tutorial will walk through the process of creating the graph using Matplotlib in Python and using team logos as the data points. The data is cleaned and in a downloadable form here: download the CSV and team logos."
+  },
+  {
+    "objectID": "tutorial-blog/index.html#prepare-the-data",
+    "href": "tutorial-blog/index.html#prepare-the-data",
+    "title": "Building a College Football Logo Scatter Plot in Python",
+    "section": "Prepare the data",
+    "text": "Prepare the data\nIn this example, we will walk through the 2025 season using the PPA statistic from collegefootballdata.com. PPA stands for predicted points added, which measures the efficiency of each play. PPA can be compared to EPA (expected points added).\nThe following is CollegeFootballData.com’s definition for PPA: “The change in Predicted Points attributable to a play, from the offense’s perspective. Positive PPA means the play improved the offense’s expected scoring position. Negative PPA means it lost value. PPA is CFBD’s implementation of the broader Expected Points Added (EPA) concept.”\nThe data already includes the average offensive and defensive PPA for each team across the entire season. Each row of the CSV is one team, and there are only four columns:\n\n\n\nColumn\nWhat it holds\n\n\n\n\nteam\nSchool name\n\n\noffensive_ppa\nAverage PPA per offensive play\n\n\ndefensive_ppa\nAverage PPA allowed per defensive play\n\n\nlogo_file\nPath to the team’s logo image\n\n\n\npython -m pip install pandas matplotlib\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport matplotlib.image as mpimg\nfrom matplotlib.offsetbox import AnnotationBbox, OffsetImage\n\ndata = pd.read_csv(\"cfbd_2025_team_ppa.csv\")"
+  },
+  {
+    "objectID": "tutorial-blog/index.html#start-with-a-basic-scatter-plot",
+    "href": "tutorial-blog/index.html#start-with-a-basic-scatter-plot",
+    "title": "Building a College Football Logo Scatter Plot in Python",
+    "section": "Start with a basic scatter plot",
+    "text": "Start with a basic scatter plot\nWe will begin by creating a figure and axis with plt.subplots(). Reference the code below to see an example. This is a simple plot that just uses ax.scatter() to check the coordinates before we add the logos.\n\nplt.style.use(\"dark_background\")\nfig, ax = plt.subplots(figsize=(16, 8))\n\ndots = ax.scatter(\n    data[\"offensive_ppa\"],\n    data[\"defensive_ppa\"],\n    s=20,\n)\n\nax.set_xlabel(\"Offensive PPA per play (higher is better)\")\nax.set_ylabel(\"Defensive PPA allowed per play (lower is better)\")\nax.set_title(\"2025 College Football: Offense vs. Defense\", loc=\"left\")\nax.margins(x=0.07, y=0.12)\n\nplt.show()\n\n\n\n\n\n\n\nFigure 1: The same data shown with ordinary dots."
+  },
+  {
+    "objectID": "tutorial-blog/index.html#add-the-team-logos",
+    "href": "tutorial-blog/index.html#add-the-team-logos",
+    "title": "Building a College Football Logo Scatter Plot in Python",
+    "section": "Add the team logos",
+    "text": "Add the team logos\nNext, we will match each team to its logo and load the images. All the images are stored in the logos folder within this project, so if you are following along, you can just download that folder. OffsetImage holds the image; AnnotationBbox positions it at (x, y). We then loop over all the teams and add each logo at that team’s position on the graph.\n\ndots.remove()\n\n# Read one row (one team) at a time.\nfor row_number, team in data.iterrows():\n    offensive_ppa = team[\"offensive_ppa\"]\n    defensive_ppa = team[\"defensive_ppa\"]\n    logo_file = team[\"logo_file\"]\n\n    # Load the team's image and scale it down to marker size.\n    logo = mpimg.imread(logo_file)\n    logo_image = OffsetImage(logo, zoom=0.04)\n\n    # Place the image at the team's offensive and defensive PPA values.\n    position = (offensive_ppa, defensive_ppa)\n    logo_marker = AnnotationBbox(\n        logo_image,\n        position,\n        frameon=False,\n        pad=0,\n    )\n    ax.add_artist(logo_marker)\n\nfig\n\n\n\n\n\n\n\nFigure 2: Team logos replace the dots at the same coordinates."
+  },
+  {
+    "objectID": "tutorial-blog/index.html#format-and-explain-the-plot",
+    "href": "tutorial-blog/index.html#format-and-explain-the-plot",
+    "title": "Building a College Football Logo Scatter Plot in Python",
+    "section": "Format and explain the plot",
+    "text": "Format and explain the plot\nThe plot is pretty much done now, but we can add a couple of things to make it look a little better. We’ll add a title and other information such as season and axis labels. We will also add a grid and the data source.\nThe interpretation of defensive PPA allowed is probably the trickiest part of viewing this graph. The lower a team appears on the y-axis, the more effectively it limits opposing offenses. So we can interpret it as the average efficiency of opposing offenses against this team’s defense. There’s an argument to be made for flipping the y-axis so the better teams are in the top right. However, I prefer to keep the best teams in the bottom right so the y-axis increases in the traditional way.\nThe limitation of this plotting method is that efficiency alone is not necessarily a great indicator of a team’s actual strength. Although great teams have to be efficient, we could not justify making a ranking system for all the teams in the nation based only on how close they are to the bottom right of this graph. Efficiency is an important metric that can help teams evaluate plays and tune their offenses and defenses. However, these averages don’t fully account for differences in opponents, so they aren’t enough on their own to create top-25-style rankings.\n\nbackground = \"#18181b\"\nfig.set_facecolor(background)\nax.set_facecolor(background)\nax.set_axisbelow(True)\nax.grid(color=\"#45454d\", linewidth=0.6, alpha=0.8)\nax.axhline(0, color=\"#888890\", linewidth=0.8)\nax.axvline(0, color=\"#888890\", linewidth=0.8)\n\n# Spines are the four borders around the plotting area.\nfor spine in ax.spines.values():\n    spine.set_color(\"#45454d\")\n\nax.set_title(\n    \"2025 College Football: Offense vs. Defense\",\n    loc=\"left\",\n    fontsize=18,\n    pad=18,\n)\n\n# Leave room below the axes for the source note.\nfig.subplots_adjust(left=0.08, right=0.98, top=0.90, bottom=0.16)\nfig.text(\n    0.08, 0.04,\n    \"Source: CollegeFootballData | 2025 FBS season | Garbage time included\\n\"\n    \"Each logo represents one team. PPA is CFBD's implementation of EPA.\",\n    fontsize=9,\n    color=\"#bdbdc5\",\n)\n\nfig\n\n\n\n\n\n\n\nFigure 3: 2025 FBS offensive and defensive PPA per play."
+  },
+  {
+    "objectID": "tutorial-blog/index.html#conclusion-and-next-steps",
+    "href": "tutorial-blog/index.html#conclusion-and-next-steps",
+    "title": "Building a College Football Logo Scatter Plot in Python",
+    "section": "Conclusion and Next Steps",
+    "text": "Conclusion and Next Steps\nAs we can see from reading this graph, Texas Tech had the defense that held opposing offenses to the lowest efficiency in the 2025 season, and Vanderbilt had the most efficient offense. BYU was in a collection of teams in the middle with Michigan, Texas, Alabama, and Auburn. Oregon, Utah, Indiana, Ohio State, and Notre Dame were also especially good teams by these metrics.\nNow try it yourself. Download the CSV and team logos, run the code above, and see where your favorite team lands. Then make your own version with two different stats. A good next graph is passing yards versus rushing yards. You could also explore explosive plays versus efficiency."
+  },
+  {
+    "objectID": "tutorial-blog/index.html#resources",
+    "href": "tutorial-blog/index.html#resources",
+    "title": "Building a College Football Logo Scatter Plot in Python",
+    "section": "Resources",
+    "text": "Resources\n\nCFBD team PPA data\nCFBD team information and logos\nMatplotlib: positioning images on a plot"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Stat381_github_website",
+    "title": "James Brandt",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "Building a College Football Logo Scatter Plot in Python"
+  },
+  {
+    "objectID": "index.html#stat-386",
+    "href": "index.html#stat-386",
+    "title": "James Brandt",
+    "section": "",
+    "text": "Building a College Football Logo Scatter Plot in Python"
   }
 ]

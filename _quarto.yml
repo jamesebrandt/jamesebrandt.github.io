@@ -1,6 +1,10 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - tutorial-blog/cfbd_2025_plot_data.zip
+    - tutorial-blog/cfbd_2025_team_ppa.csv
+    - tutorial-blog/logos/
 
 website:
   title: "James Most Awesome Website"
@@ -9,6 +13,8 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - href: tutorial-blog/index.qmd
+        text: Tutorial Blog
 
 format:
   html:

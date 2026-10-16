@@ -1,0 +1,169 @@
+---
+title: "Building a College Football Logo Scatter Plot in Python"
+author: "James Brandt"
+format: html
+jupyter: python3
+execute:
+  output: true
+---
+
+
+## Introduction
+
+This tutorial blog walks through the process of creating the following plot:
+
+![](index_files/figure-html/fig-football-final-output-1.png){fig-alt="The finished 2025 FBS logo scatter plot. Offensive PPA per play increases to the right, and defensive PPA allowed per play increases upward. Teams toward the bottom right have more efficient offenses and defenses."}
+
+@fig-football-final
+
+This graph shows the efficiency of offense and defense for NCAA football teams. Further to the right is a more efficient offense, and further down is a defense that holds opposing offenses to lower efficiency. Therefore, more efficient teams will appear toward the **bottom right** of the graph. This is helpful for seeing how teams compare in a nice, easy-to-read plot.
+
+This tutorial will walk through the process of creating the graph using Matplotlib in Python and using team logos as the data points. The data is cleaned and in a downloadable form here: [download the CSV and team logos](cfbd_2025_plot_data.zip).
+
+## Prepare the data
+
+In this example, we will walk through the 2025 season using the PPA statistic from collegefootballdata.com. PPA stands for *predicted points added*, which measures the efficiency of each play. PPA can be compared to EPA (expected points added).
+
+The following is CollegeFootballData.com's definition for PPA: "The change in Predicted Points attributable to a play, from the offense's perspective. Positive PPA means the play improved the offense's expected scoring position. Negative PPA means it lost value. PPA is CFBD's implementation of the broader Expected Points Added (EPA) concept."
+
+The data already includes the average offensive and defensive PPA for each team across the entire season. Each row of the CSV is one team, and there are only four columns:
+
+| Column | What it holds |
+|---|---|
+| `team` | School name |
+| `offensive_ppa` | Average PPA per offensive play |
+| `defensive_ppa` | Average PPA allowed per defensive play |
+| `logo_file` | Path to the team's logo image |
+
+
+```bash
+python -m pip install pandas matplotlib
+```
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from matplotlib.offsetbox import AnnotationBbox, OffsetImage
+
+data = pd.read_csv("cfbd_2025_team_ppa.csv")
+```
+
+## Start with a basic scatter plot
+
+We will begin by creating a figure and axis with `plt.subplots()`. Reference the code below to see an example. This is a simple plot that just uses `ax.scatter()` to check the coordinates before we add the logos.
+
+```{python}
+#| label: fig-basic-scatter
+#| fig-cap: "The same data shown with ordinary dots."
+#| fig-alt: "A basic scatter plot showing each team's offensive PPA per play on the horizontal axis and defensive PPA allowed per play on the vertical axis."
+
+plt.style.use("dark_background")
+fig, ax = plt.subplots(figsize=(16, 8))
+
+dots = ax.scatter(
+    data["offensive_ppa"],
+    data["defensive_ppa"],
+    s=20,
+)
+
+ax.set_xlabel("Offensive PPA per play (higher is better)")
+ax.set_ylabel("Defensive PPA allowed per play (lower is better)")
+ax.set_title("2025 College Football: Offense vs. Defense", loc="left")
+ax.margins(x=0.07, y=0.12)
+
+plt.show()
+```
+
+## Add the team logos
+
+Next, we will match each team to its logo and load the images. All the images are stored in the `logos` folder within this project, so if you are following along, you can just download that folder. `OffsetImage` holds the image; `AnnotationBbox` positions it at (x, y). We then loop over all the teams and add each logo at that team's position on the graph.
+
+```{python}
+#| label: fig-logo-scatter
+#| fig-cap: "Team logos replace the dots at the same coordinates."
+#| fig-alt: "A scatter plot of 2025 FBS teams with a team logo at each team's offensive PPA and defensive PPA allowed coordinates."
+
+dots.remove()
+
+# Read one row (one team) at a time.
+for row_number, team in data.iterrows():
+    offensive_ppa = team["offensive_ppa"]
+    defensive_ppa = team["defensive_ppa"]
+    logo_file = team["logo_file"]
+
+    # Load the team's image and scale it down to marker size.
+    logo = mpimg.imread(logo_file)
+    logo_image = OffsetImage(logo, zoom=0.04)
+
+    # Place the image at the team's offensive and defensive PPA values.
+    position = (offensive_ppa, defensive_ppa)
+    logo_marker = AnnotationBbox(
+        logo_image,
+        position,
+        frameon=False,
+        pad=0,
+    )
+    ax.add_artist(logo_marker)
+
+fig
+```
+
+## Format and explain the plot
+
+The plot is pretty much done now, but we can add a couple of things to make it look a little better. We'll add a title and other information such as season and axis labels. We will also add a grid and the data source. 
+
+The interpretation of defensive PPA allowed is probably the trickiest part of viewing this graph. The *lower* a team appears on the y-axis, the more effectively it limits opposing offenses. So we can interpret it as the average efficiency of opposing offenses against this team's defense. There's an argument to be made for flipping the y-axis so the better teams are in the top right. However, I prefer to keep the best teams in the bottom right so the y-axis increases in the traditional way.
+
+The limitation of this plotting method is that efficiency alone is *not* necessarily a great indicator of a team's actual strength. Although great teams have to be efficient, we could not justify making a ranking system for all the teams in the nation based only on how close they are to the bottom right of this graph. Efficiency is an important metric that can help teams evaluate plays and tune their offenses and defenses. However, these averages don't fully account for differences in opponents, so they aren't enough on their own to create top-25-style rankings.
+
+
+```{python}
+#| label: fig-football-final
+#| fig-cap: "2025 FBS offensive and defensive PPA per play."
+#| fig-alt: "A scatter plot of 2025 FBS teams using team logos. Offensive PPA per play increases to the right, while defensive PPA allowed per play increases upward. Teams toward the bottom right combine more efficient offense with more effective defense."
+
+background = "#18181b"
+fig.set_facecolor(background)
+ax.set_facecolor(background)
+ax.set_axisbelow(True)
+ax.grid(color="#45454d", linewidth=0.6, alpha=0.8)
+ax.axhline(0, color="#888890", linewidth=0.8)
+ax.axvline(0, color="#888890", linewidth=0.8)
+
+# Spines are the four borders around the plotting area.
+for spine in ax.spines.values():
+    spine.set_color("#45454d")
+
+ax.set_title(
+    "2025 College Football: Offense vs. Defense",
+    loc="left",
+    fontsize=18,
+    pad=18,
+)
+
+# Leave room below the axes for the source note.
+fig.subplots_adjust(left=0.08, right=0.98, top=0.90, bottom=0.16)
+fig.text(
+    0.08, 0.04,
+    "Source: CollegeFootballData | 2025 FBS season | Garbage time included\n"
+    "Each logo represents one team. PPA is CFBD's implementation of EPA.",
+    fontsize=9,
+    color="#bdbdc5",
+)
+
+fig
+```
+
+## Conclusion and Next Steps
+
+As we can see from reading this graph, Texas Tech had the defense that held opposing offenses to the lowest efficiency in the 2025 season, and Vanderbilt had the most efficient offense. BYU was in a collection of teams in the middle with Michigan, Texas, Alabama, and Auburn. Oregon, Utah, Indiana, Ohio State, and Notre Dame were also especially good teams by these metrics.
+
+Now try it yourself. **[Download the CSV and team logos](cfbd_2025_plot_data.zip)**, run the code above, and see where your favorite team lands. Then make your own version with two different stats. A good next graph is passing yards versus rushing yards. You could also explore explosive plays versus efficiency.
+
+
+## Resources
+
+- [CFBD team PPA data](https://api.collegefootballdata.com/api/metrics)
+- [CFBD team information and logos](https://api.collegefootballdata.com/api/teams)
+- [Matplotlib: positioning images on a plot](https://matplotlib.org/stable/gallery/text_labels_and_annotations/demo_annotation_box.html)

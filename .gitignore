@@ -1,2 +1,5 @@
 /.quarto/
 **/*.quarto_ipynb
+/.worktrees/
+/_site/
+/tutorial-blog/index_files/
