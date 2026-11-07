@@ -1,10 +1,73 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "basketball-tempo/index.html",
+    "href": "basketball-tempo/index.html",
+    "title": "Does Faster Basketball Make Offenses More Efficient?",
     "section": "",
-    "text": "About this site"
+    "text": "Unlike football, basketball has a definitive tempo statistic that has a real effect on the game, and it’s something teams strategize around. I wondered how tempo actually affects an offense’s scoring. Is strategizing for a high tempo a good and effective game plan for teams? More specifically, does faster tempo improve scoring efficiency, or mainly create more chances to score?"
+  },
+  {
+    "objectID": "basketball-tempo/index.html#why-i-wanted-to-look-at-tempo",
+    "href": "basketball-tempo/index.html#why-i-wanted-to-look-at-tempo",
+    "title": "Does Faster Basketball Make Offenses More Efficient?",
+    "section": "",
+    "text": "Unlike football, basketball has a definitive tempo statistic that has a real effect on the game, and it’s something teams strategize around. I wondered how tempo actually affects an offense’s scoring. Is strategizing for a high tempo a good and effective game plan for teams? More specifically, does faster tempo improve scoring efficiency, or mainly create more chances to score?"
+  },
+  {
+    "objectID": "basketball-tempo/index.html#the-data-and-how-i-got-it",
+    "href": "basketball-tempo/index.html#the-data-and-how-i-got-it",
+    "title": "Does Faster Basketball Make Offenses More Efficient?",
+    "section": "The data and how I got it",
+    "text": "The data and how I got it\n\nSource: 2025–26 games and team box scores from the CollegeBasketballData API.\nUnit: one completed Division I game without overtime. Of 5,752 final games, 5,403 passed the checks; 325 went to overtime and 24 lacked a complete box score.\nFeatures: 11 columns, including game date, home and away teams and points, combined points, estimated possessions, points per possession, and game-site flags.\nCuration: joined the two API endpoints by game ID; checked that box and game scores match; estimated possessions from field-goal attempts, offensive rebounds, turnovers, and free-throw attempts.\n\nIt was fun to see all of the different endpoints that this API had and how many possible opportunities there are for collecting valuable basketball data. The CollegeBasketballData basketball dataset is extremely well done and very comprehensive. That was the most surprising thing for me. There’s a lot of opportunity to continue to explore this data."
+  },
+  {
+    "objectID": "basketball-tempo/index.html#ethics-and-good-api-practice",
+    "href": "basketball-tempo/index.html#ethics-and-good-api-practice",
+    "title": "Does Faster Basketball Make Offenses More Efficient?",
+    "section": "Ethics and good API practice",
+    "text": "Ethics and good API practice\nI decided to use an API for this data both out of convenience and out of respect for the website: I wanted to get the data in the way it intended. In fact, I paid for the $10 tier so I could make more calls for other football and basketball NCAA data analysis. I stored the API key outside the repo and made sure not to push it publicly. Even with a higher call allowance, I paced requests and left a quota reserve. The API terms restrict publishing its data as a standalone bulk dataset, so I’m sharing code, a graph, and a link to the API, but not the raw data I pulled."
+  },
+  {
+    "objectID": "basketball-tempo/index.html#what-the-graph-shows",
+    "href": "basketball-tempo/index.html#what-the-graph-shows",
+    "title": "Does Faster Basketball Make Offenses More Efficient?",
+    "section": "What the graph shows",
+    "text": "What the graph shows\n\n\n\nEach dot represents one 2025–26 Division I regulation game, comparing estimated possessions per team with combined points and points per possession.\n\n\nI noticed that there is a general upward trend and a positive correlation between tempo and total points. But there’s actually more noise than I would have initially guessed. I would’ve guessed that having a high tempo more closely leads to higher points, but it seems a lot more noisy.\nIt was interesting to see that the efficiency of teams did not change much across different tempos in these games. Teams that managed a higher tempo tended to score more total points with no real drop-off in efficiency, despite their increased pace. This makes me wonder whether tempo is based more on the physical ability and play style of teams than on scoring efficiency.\n\n\n\n2025–26 regulation games\nValue\n\n\n\n\nGames in the graph\n5,403\n\n\nMedian possessions per team\n67.4\n\n\nMedian combined points\n148\n\n\nCorrelation: tempo and total points\n0.588\n\n\nCorrelation: tempo and points per possession\n−0.013"
+  },
+  {
+    "objectID": "basketball-tempo/index.html#what-i-can-and-cannot-conclude",
+    "href": "basketball-tempo/index.html#what-i-can-and-cannot-conclude",
+    "title": "Does Faster Basketball Make Offenses More Efficient?",
+    "section": "What I can and cannot conclude",
+    "text": "What I can and cannot conclude\nOne limitation I did not account for is that teams with more possessions might also have more fast breaks, and fast breaks could be higher-percentage scoring chances. I am not sure how best to isolate that pattern yet, but I would like to know whether fast-break possessions score more often and whether that changes the efficiency of teams that play at a higher tempo. The box-score table does not label fast breaks, and comparing games cannot tell me what would happen if a team deliberately changed its pace."
+  },
+  {
+    "objectID": "basketball-tempo/index.html#if-you-want-to-try-a-similar-project",
+    "href": "basketball-tempo/index.html#if-you-want-to-try-a-similar-project",
+    "title": "Does Faster Basketball Make Offenses More Efficient?",
+    "section": "If you want to try a similar project",
+    "text": "If you want to try a similar project\nIt’s very easy for someone to make a similar dataset to the one that I used for this project. First, you have to get a CBBD key and request the game and team box score data. You can join those two datasets by game ID and then estimate possessions from the box stats. Then you need to check the scores and graph the totals and points per possession."
+  },
+  {
+    "objectID": "basketball-tempo/index.html#links",
+    "href": "basketball-tempo/index.html#links",
+    "title": "Does Faster Basketball Make Offenses More Efficient?",
+    "section": "Links",
+    "text": "Links\n\nPython code and figure on GitHub\nCollegeBasketballData API documentation\nGet a CollegeBasketballData API key\nCollegeBasketballData terms of use"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "James Brandt",
+    "section": "",
+    "text": "Building a College Football Logo Scatter Plot in Python\nDoes Faster Basketball Make Offenses More Efficient?"
+  },
+  {
+    "objectID": "index.html#stat-386",
+    "href": "index.html#stat-386",
+    "title": "James Brandt",
+    "section": "",
+    "text": "Building a College Football Logo Scatter Plot in Python\nDoes Faster Basketball Make Offenses More Efficient?"
   },
   {
     "objectID": "tutorial-blog/index.html",
@@ -63,17 +126,10 @@
     "text": "Resources\n\nCFBD team PPA data\nCFBD team information and logos\nMatplotlib: positioning images on a plot"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "James Brandt",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "Building a College Football Logo Scatter Plot in Python"
-  },
-  {
-    "objectID": "index.html#stat-386",
-    "href": "index.html#stat-386",
-    "title": "James Brandt",
-    "section": "",
-    "text": "Building a College Football Logo Scatter Plot in Python"
+    "text": "About this site"
   }
 ]

@@ -5,3 +5,5 @@ title: "James Brandt"
 ## STAT 386
 
 [Building a College Football Logo Scatter Plot in Python](tutorial-blog/index.qmd)
+
+[Does Faster Basketball Make Offenses More Efficient?](basketball-tempo/index.qmd)
